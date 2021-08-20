@@ -228,8 +228,13 @@ def ClearAllSteps():
 """
 def RemoveLast():
     Steps.pop()
+    global LoopIndex
     if inLoop:
-        Loops[LoopIndex].LoopSteps.pop()
+        if not Loops[LoopIndex].LoopSteps:#check if 'LoopSteps' list is empty - if it is, remove element from 'Loops'
+            Loops.pop()
+            LoopIndex -= 1
+        else:#'LoopSteps' not empty - pop item from that list
+            Loops[LoopIndex].LoopSteps.pop()
     # Note: This doesn't take into accont if loop was deleted
 
     # Update steps to user
@@ -325,7 +330,7 @@ def AddKeyboard():
     UpdateSteps()
 
 """
-# This creates a step where it will type what the user wants at runtime.
+# This creates a step where it will type/write what the user wants at runtime.
 # Note: There is a 0.15 delay between each press
 """
 def AddTyping():
@@ -502,7 +507,7 @@ def InitWindow(windowWidth, windowHeight):
     my_window.update()
 
 """
-# Creates the containrs for the application. All new containers
+# Creates the containers for the application. All new containers
 # are added to the grid and Containers list and are sticky to
 # the main window.
 """
@@ -593,7 +598,7 @@ def UpdateSteps():
     for widget in relative_frame.winfo_children():
         widget.destroy()
 
-    # Display what thos conatiner is for
+    # Display what this conatiner is for
     Label(relative_frame,text="Steps", fg="white", bg=backgroundColor, font=Text_Font).pack()
     Label(relative_frame, text="", bg=backgroundColor).pack() # a spacer
 
@@ -615,3 +620,4 @@ my_window.mainloop()
 
 
 # Notes: there are 3 things that must be installed, python, pyautogui, and the pillow package
+#
